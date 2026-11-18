@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+# 入口脚本：Linux/macOS 必须是 LF，Windows 批处理必须是 CRLF
+gradlew text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# 二进制
+*.jar binary
+*.apk binary
+*.aab binary
+*.png binary
+*.jpg binary
+*.webp binary
