@@ -118,10 +118,28 @@ object AnalysisParser {
         romanization = a.romanization.trim(),
         level = a.level.trim(),
         nuance = a.nuance.trim(),
+        romHighlight = a.romHighlight.trim(),
         segments = a.segments
             .filter { it.ko.isNotBlank() || it.zh.isNotBlank() }
             .take(40)
-            .map { it.copy(ko = it.ko.trim(), rom = it.rom.trim(), pos = it.pos.trim(), tag = it.tag.trim(), zh = it.zh.trim(), hanja = it.hanja.trim(), base = it.base.trim(), note = it.note.trim()) },
+            .map {
+                it.copy(
+                    ko = it.ko.trim(),
+                    rom = it.rom.trim(),
+                    romHi = it.romHi.trim(),
+                    pron = it.pron.trim(),
+                    why = it.why.trim(),
+                    pos = it.pos.trim(),
+                    tag = it.tag.trim(),
+                    zh = it.zh.trim(),
+                    hanja = it.hanja.trim(),
+                    src = it.src.trim(),
+                    srcRom = it.srcRom.trim(),
+                    lang = it.lang.trim(),
+                    base = it.base.trim(),
+                    note = it.note.trim(),
+                )
+            },
         grammar = a.grammar?.let { g ->
             g.copy(
                 type = g.type.trim(),
@@ -146,6 +164,12 @@ object AnalysisParser {
                         english = item.english.trim(),
                         tip = item.tip.trim(),
                         chars = item.chars.filter { it.ko.isNotBlank() || it.hanja.isNotBlank() }.take(6),
+                        src = item.src.trim(),
+                        srcRom = item.srcRom.trim(),
+                        lang = item.lang.trim(),
+                        romHi = item.romHi.trim(),
+                        pron = item.pron.trim(),
+                        why = item.why.trim(),
                     )
                 },
                 cognates = e.cognates.filter { it.ko.isNotBlank() || it.zh.isNotBlank() }.take(8),

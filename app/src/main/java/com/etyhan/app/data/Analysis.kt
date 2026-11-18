@@ -18,8 +18,10 @@ data class Analysis(
     val kind: String = "word",
     /** 中文译文（单词则为释义） */
     @SerialName("t") val translation: String = "",
-    /** 整条输入的罗马音 */
+    /** 整条输入的罗马音（按实际读音写） */
     @SerialName("rom") val romanization: String = "",
+    /** 罗马音里要标红的子串（音变 / 特殊读音），多个用 | 分隔 */
+    @SerialName("romHi") val romHighlight: String = "",
     /** TOPIK 1~6 / 初·中·高级 */
     @SerialName("level") val level: String = "",
     @SerialName("segs") val segments: List<Segment> = emptyList(),
@@ -41,7 +43,14 @@ data class Analysis(
 data class Segment(
     /** 原文片段 */
     @SerialName("ko") val ko: String = "",
+    /** 实际读音的罗马音（不是逐字转写） */
     @SerialName("rom") val rom: String = "",
+    /** rom 里要标红的子串，多个用 | 分隔 */
+    @SerialName("romHi") val romHi: String = "",
+    /** 韩文实际发音，如 [학꾜] */
+    @SerialName("pron") val pron: String = "",
+    /** 音变原因，如“紧音化”“词首 ㅂ 读 p” */
+    @SerialName("why") val why: String = "",
     /** 韩语词性：명사 / 조사 / 어미 … */
     @SerialName("pos") val pos: String = "",
     /** 语法角色：词干 / 主格助词 / 过去时制 / 尊敬语尾 … */
@@ -49,6 +58,12 @@ data class Segment(
     /** 中文意思 */
     @SerialName("zh") val zh: String = "",
     @SerialName("hanja") val hanja: String = "",
+    /** 来源语言原词（英/日/法等），如 computer、弁当 */
+    @SerialName("src") val src: String = "",
+    /** 外来词原词的拉丁转写（英语不需要，日语/法语等需要） */
+    @SerialName("srcRom") val srcRom: String = "",
+    /** 来源语言代码：zh/en/ja/fr/de/… */
+    @SerialName("lang") val lang: String = "",
     /** sino / native / loan / hybrid / unknown */
     @SerialName("origin") val origin: String = "",
     /** 动词·形容词的原形 */
@@ -93,13 +108,28 @@ data class EtyItem(
     @SerialName("origin") val origin: String = "",
     @SerialName("hanja") val hanja: String = "",
     @SerialName("rom") val rom: String = "",
+    /** rom 里要标红的子串，多个用 | 分隔 */
+    @SerialName("romHi") val romHi: String = "",
+    /** 韩文实际发音，如 [학꾜] */
+    @SerialName("pron") val pron: String = "",
+    /** 音变原因 */
+    @SerialName("why") val why: String = "",
     @SerialName("meaning") val meaning: String = "",
-    /** 外来词的原词，如 computer / パン */
+    /** 来源语言原词，如 computer / 弁当 / boutique */
+    @SerialName("src") val src: String = "",
+    /** 外来词原词的拉丁转写（英语不需要，日语/法语等需要） */
+    @SerialName("srcRom") val srcRom: String = "",
+    /** 来源语言代码：zh/en/ja/fr/de/… */
+    @SerialName("lang") val lang: String = "",
+    /** 旧字段：外来词原词（与 src 等价，保留兼容） */
     @SerialName("english") val english: String = "",
     /** 汉字词逐字对照 */
     @SerialName("chars") val chars: List<HanjaChar> = emptyList(),
     @SerialName("tip") val tip: String = "",
-)
+) {
+    /** 来源写法：汉字词用繁体汉字，外来词用原语言词。 */
+    val sourceForm: String get() = hanja.ifBlank { src.ifBlank { english } }
+}
 
 @Serializable
 data class HanjaChar(
@@ -153,6 +183,69 @@ enum class Origin(val id: String, val label: String, val short: String) {
                 lower.contains("loan") || lower.contains("foreign") || s.contains("外来") || s.contains("외래") -> LOAN
                 else -> UNKNOWN
             }
+        }
+    }
+}
+
+/**
+ * 来源标签：汉 / 固 / 英 / 日 / 法 / 德… 全部同一个样式、同一个位置，
+ * 不再让“汉字词”比其他来源更特殊；具体内容（汉字、原词）另起一个元素展示。
+ */
+object SourceLabels {
+
+    fun langKey(raw: String?): String {
+        val s = raw?.trim()?.lowercase().orEmpty()
+        return when {
+            s.startsWith("zh") || s.contains("chinese") || s.contains("汉语") || s.contains("中文") -> "zh"
+            s.startsWith("en") || s.contains("english") || s.contains("英语") -> "en"
+            s.startsWith("ja") || s.startsWith("jp") || s.contains("japanese") || s.contains("日语") || s.contains("日本語") -> "ja"
+            s.startsWith("fr") || s.contains("french") || s.contains("法语") -> "fr"
+            s.startsWith("de") || s.contains("german") || s.contains("德语") -> "de"
+            s.startsWith("es") || s.contains("spanish") || s.contains("西班牙") -> "es"
+            s.startsWith("ru") || s.contains("russian") || s.contains("俄语") -> "ru"
+            s.startsWith("it") || s.contains("italian") || s.contains("意大利") -> "it"
+            s.startsWith("la") || s.contains("latin") || s.contains("拉丁") -> "la"
+            else -> s
+        }
+    }
+
+    /** 标签上的一个字。 */
+    fun short(origin: Origin, lang: String? = null): String = when (origin) {
+        Origin.SINO -> "汉"
+        Origin.NATIVE -> "本土"
+        Origin.HYBRID -> "混"
+        Origin.UNKNOWN -> "?"
+        Origin.LOAN -> when (langKey(lang)) {
+            "en" -> "英"
+            "ja" -> "日"
+            "fr" -> "法"
+            "de" -> "德"
+            "es" -> "西"
+            "ru" -> "俄"
+            "it" -> "意"
+            "la" -> "拉"
+            "zh" -> "汉"
+            else -> "外"
+        }
+    }
+
+    /** 读屏 / 长按用的完整名称。 */
+    fun label(origin: Origin, lang: String? = null): String = when (origin) {
+        Origin.SINO -> "汉字词"
+        Origin.NATIVE -> "固有词（本土词）"
+        Origin.HYBRID -> "混合词"
+        Origin.UNKNOWN -> "词源待考"
+        Origin.LOAN -> when (langKey(lang)) {
+            "en" -> "英语来源"
+            "ja" -> "日语来源"
+            "fr" -> "法语来源"
+            "de" -> "德语来源"
+            "es" -> "西班牙语来源"
+            "ru" -> "俄语来源"
+            "it" -> "意大利语来源"
+            "la" -> "拉丁语来源"
+            "zh" -> "汉语来源"
+            else -> "外来词"
         }
     }
 }

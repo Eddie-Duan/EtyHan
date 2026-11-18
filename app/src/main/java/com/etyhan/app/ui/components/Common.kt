@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.etyhan.app.data.Origin
+import com.etyhan.app.data.SourceLabels
 import com.etyhan.app.tts.Speaker
 
 @Composable
@@ -86,7 +87,7 @@ fun OriginBadge(origin: Origin, modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(6.dp),
     ) {
         Text(
-            text = origin.label,
+            text = SourceLabels.short(origin),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
             maxLines = 1,

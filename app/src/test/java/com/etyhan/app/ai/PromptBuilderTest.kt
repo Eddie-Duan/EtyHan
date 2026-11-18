@@ -17,6 +17,8 @@ class PromptBuilderTest {
         assertTrue(a.contains("\"segs\""))
         assertTrue(a.contains("ety"))
         assertTrue(a.contains("chars"))
+        assertTrue(a.contains("romHi"))
+        assertTrue(a.contains("\"lang\"") || a.contains("lang："))
         assertTrue(a.contains("只输出一个 JSON 对象"))
     }
 

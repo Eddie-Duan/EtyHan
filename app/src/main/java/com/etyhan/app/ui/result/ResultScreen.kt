@@ -69,19 +69,23 @@ import com.etyhan.app.data.EtyItem
 import com.etyhan.app.data.Origin
 import com.etyhan.app.data.PosLabels
 import com.etyhan.app.data.Segment
+import com.etyhan.app.data.SourceLabels
 import com.etyhan.app.data.StoredAnalysis
 import com.etyhan.app.ui.components.ConfirmDialog
 import com.etyhan.app.ui.components.DividerLine
 import com.etyhan.app.ui.components.EmptyState
 import com.etyhan.app.ui.components.ErrorBlock
 import com.etyhan.app.ui.components.EtyCard
-import com.etyhan.app.ui.components.OriginBadge
 import com.etyhan.app.ui.components.RawTextDialog
+import com.etyhan.app.ui.components.RomText
+import com.etyhan.app.ui.components.SourceBadge
+import com.etyhan.app.ui.components.SourceForm
 import com.etyhan.app.ui.components.SectionHeader
 import com.etyhan.app.ui.components.SpeakButton
 import com.etyhan.app.ui.components.TagPill
 import com.etyhan.app.ui.components.copyToClipboard
 import com.etyhan.app.ui.components.originColors
+import com.etyhan.app.ui.components.pronunciationRed
 import com.etyhan.app.ui.components.shareText
 import com.etyhan.app.ui.formatDuration
 import com.etyhan.app.ui.formatTokens
@@ -320,10 +324,10 @@ private fun Hero(
             SpeakButton(text = query, speaker = speaker, modifier = Modifier.size(44.dp))
         }
         if (showRomanization && analysis.romanization.isNotBlank()) {
-            Text(
-                analysis.romanization,
+            RomText(
+                rom = analysis.romanization,
+                highlight = analysis.romHighlight,
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         Spacer(Modifier.height(8.dp))
@@ -462,6 +466,12 @@ private fun SegmentsBody(analysis: Analysis, onWordClick: (String) -> Unit) {
         if (analysis.segments.isNotEmpty()) {
             Spacer(Modifier.height(8.dp))
             Text(
+                "红色罗马音 = 音变或特殊读音，[ ] 内是韩文实际发音。",
+                style = MaterialTheme.typography.labelSmall,
+                color = pronunciationRed(),
+            )
+            Spacer(Modifier.height(3.dp))
+            Text(
                 "点按任一词可单独查它的词源；语尾和助词也可以点。",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -470,9 +480,38 @@ private fun SegmentsBody(analysis: Analysis, onWordClick: (String) -> Unit) {
     }
 }
 
+
+/**
+ * 来源写法：
+ * - 汉 → 繁体汉字，不加罗马音
+ * - 英 → 原词，不加罗马音
+ * - 日 / 法 / 德… → 原词 + 拉丁转写（读者看不懂这些语言）
+ * - 本土 → 没有来源写法，什么都不显示
+ */
+@Composable
+private fun SourceEntry(
+    origin: Origin,
+    hanja: String,
+    src: String,
+    srcRom: String,
+    lang: String,
+    large: Boolean = false,
+) {
+    when {
+        hanja.isNotBlank() -> SourceForm(hanja, large = large)
+        src.isNotBlank() -> {
+            val key = SourceLabels.langKey(lang)
+            val showRom = srcRom.isNotBlank() && key != "en" && key != "zh"
+            SourceForm(src, rom = if (showRom) srcRom else "", large = large)
+        }
+        else -> Unit
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SegmentRow(seg: Segment, onWordClick: (String) -> Unit) {
+internal fun SegmentRow(seg: Segment, onWordClick: (String) -> Unit) {
+    val origin = Origin.of(seg.origin)
     Column(
         Modifier
             .fillMaxWidth()
@@ -486,35 +525,66 @@ private fun SegmentRow(seg: Segment, onWordClick: (String) -> Unit) {
                 fontFamily = FontFamily.Serif,
             )
             if (seg.rom.isNotBlank()) {
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    seg.rom,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Spacer(Modifier.width(7.dp))
+                RomText(
+                    rom = seg.rom,
+                    highlight = seg.romHi,
+                    modifier = Modifier.weight(1f, fill = false),
+                    style = MaterialTheme.typography.labelMedium,
                 )
+            } else {
+                Spacer(Modifier.weight(1f))
             }
-            Spacer(Modifier.weight(1f))
             if (seg.pos.isNotBlank()) {
+                Spacer(Modifier.width(6.dp))
                 TagPill(PosLabels.zh(seg.pos).ifBlank { seg.pos })
             }
-            if (seg.origin.isNotBlank() && Origin.of(seg.origin) != Origin.UNKNOWN) {
+            if (seg.origin.isNotBlank() && origin != Origin.UNKNOWN) {
                 Spacer(Modifier.width(4.dp))
-                OriginBadge(Origin.of(seg.origin))
+                SourceBadge(origin, seg.lang)
             }
         }
+
+        // 标签后直接写内容：汉 → 汉字，英 → 原词，日/法… → 原词 + 罗马音，本土 → 不写
+        if (seg.hanja.isNotBlank() || seg.src.isNotBlank()) {
+            Spacer(Modifier.height(6.dp))
+            SourceEntry(
+                origin = Origin.of(seg.origin),
+                hanja = seg.hanja,
+                src = seg.src,
+                srcRom = seg.srcRom,
+                lang = seg.lang,
+            )
+        }
+
         if (seg.zh.isNotBlank()) {
-            Spacer(Modifier.height(3.dp))
+            Spacer(Modifier.height(4.dp))
             Text(seg.zh, style = MaterialTheme.typography.bodyLarge)
         }
-        Spacer(Modifier.height(5.dp))
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            if (seg.tag.isNotBlank()) TagPill(seg.tag)
-            if (seg.base.isNotBlank()) TagPill("原形 ${seg.base}")
-            if (seg.hanja.isNotBlank()) {
-                val (bg, fg) = originColors(Origin.SINO)
-                TagPill("漢 ${seg.hanja}", container = bg, contentColor = fg)
+
+        if (seg.pron.isNotBlank() || seg.why.isNotBlank()) {
+            Spacer(Modifier.height(4.dp))
+            FlowRow(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                if (seg.pron.isNotBlank()) {
+                    TagPill(seg.pron, container = MaterialTheme.colorScheme.surfaceVariant, contentColor = MaterialTheme.colorScheme.onSurface)
+                }
+                if (seg.why.isNotBlank()) {
+                    Text(seg.why, style = MaterialTheme.typography.labelSmall, color = pronunciationRed())
+                }
             }
         }
+
+        if (seg.tag.isNotBlank() || seg.base.isNotBlank()) {
+            Spacer(Modifier.height(5.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                if (seg.tag.isNotBlank()) TagPill(seg.tag)
+                if (seg.base.isNotBlank()) TagPill("原形 ${seg.base}")
+            }
+        }
+
         if (seg.note.isNotBlank()) {
             Spacer(Modifier.height(5.dp))
             Text(
@@ -688,11 +758,12 @@ private fun EtymologyBody(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun EtyItemCard(
+internal fun EtyItemCard(
     item: EtyItem,
     speaker: com.etyhan.app.tts.Speaker,
     onWordClick: (String) -> Unit,
 ) {
+    val origin = Origin.of(item.origin)
     EtyCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -701,28 +772,47 @@ private fun EtyItemCard(
                 fontFamily = FontFamily.Serif,
                 modifier = Modifier.clickable { onWordClick(item.word) },
             )
-            if (item.hanja.isNotBlank()) {
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    item.hanja,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontFamily = FontFamily.Serif,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(6.dp))
             SpeakButton(text = item.word, speaker = speaker)
             Spacer(Modifier.weight(1f))
-            OriginBadge(Origin.of(item.origin))
+            if (origin != Origin.UNKNOWN) SourceBadge(origin, item.lang)
         }
-        if (item.rom.isNotBlank() || item.meaning.isNotBlank()) {
+
+        if (item.rom.isNotBlank()) {
+            Spacer(Modifier.height(2.dp))
+            RomText(item.rom, item.romHi, style = MaterialTheme.typography.bodySmall)
+        }
+        if (item.pron.isNotBlank() || item.why.isNotBlank()) {
             Spacer(Modifier.height(4.dp))
-            Text(
-                listOfNotNull(item.rom.ifBlank { null }, item.meaning.ifBlank { null }).joinToString(" · "),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            FlowRow(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                if (item.pron.isNotBlank()) TagPill(item.pron)
+                if (item.why.isNotBlank()) {
+                    Text(item.why, style = MaterialTheme.typography.labelSmall, color = pronunciationRed())
+                }
+            }
+        }
+
+        // 和标签分开的独立元素：汉字、原词（外来语再加罗马音），本土词不写
+        if (item.sourceForm.isNotBlank()) {
+            Spacer(Modifier.height(10.dp))
+            SourceEntry(
+                origin = origin,
+                hanja = item.hanja,
+                src = item.src.ifBlank { item.english },
+                srcRom = item.srcRom,
+                lang = item.lang,
+                large = true,
             )
         }
+
+        if (item.meaning.isNotBlank()) {
+            Spacer(Modifier.height(8.dp))
+            Text(item.meaning, style = MaterialTheme.typography.bodyLarge)
+        }
+
         if (item.chars.isNotEmpty()) {
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -753,10 +843,6 @@ private fun EtyItemCard(
                     }
                 }
             }
-        }
-        if (item.english.isNotBlank()) {
-            Spacer(Modifier.height(6.dp))
-            Text("外来原词：${item.english}", style = MaterialTheme.typography.bodySmall)
         }
         if (item.tip.isNotBlank()) {
             Spacer(Modifier.height(8.dp))

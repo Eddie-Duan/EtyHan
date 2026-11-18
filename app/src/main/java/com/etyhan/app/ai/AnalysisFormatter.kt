@@ -3,6 +3,7 @@ package com.etyhan.app.ai
 import com.etyhan.app.data.Analysis
 import com.etyhan.app.data.Origin
 import com.etyhan.app.data.PosLabels
+import com.etyhan.app.data.SourceLabels
 import com.etyhan.app.data.StoredAnalysis
 
 /** 把一份分析导出成可复制/分享的纯文本。 */
@@ -21,10 +22,13 @@ object AnalysisFormatter {
                 a.segments.forEach { s ->
                     append("· ").append(s.ko)
                     if (s.rom.isNotBlank()) append(" [").append(s.rom).append(']')
+                    if (s.pron.isNotBlank()) append(" 发音").append(s.pron)
+                    if (s.why.isNotBlank()) append("（").append(s.why).append("）")
                     val meta = listOfNotNull(
                         s.pos.ifBlank { null },
                         s.tag.ifBlank { null },
                         s.hanja.ifBlank { null },
+                        s.src.ifBlank { null },
                     ).joinToString(" / ")
                     if (meta.isNotBlank()) append("  ").append(meta)
                     if (s.zh.isNotBlank()) append("  → ").append(s.zh)
@@ -53,8 +57,9 @@ object AnalysisFormatter {
                 if (e.summary.isNotBlank()) append(e.summary).append('\n')
                 e.items.forEach { item ->
                     append("· ").append(item.word)
-                    if (item.hanja.isNotBlank()) append("（").append(item.hanja).append("）")
-                    append(" ").append(Origin.of(item.origin).label)
+                    append(" ").append(SourceLabels.short(Origin.of(item.origin), item.lang))
+                    if (item.sourceForm.isNotBlank()) append("（").append(item.sourceForm).append("）")
+                    if (item.pron.isNotBlank()) append(" 发音").append(item.pron)
                     if (item.meaning.isNotBlank()) append("：").append(item.meaning)
                     append('\n')
                     if (item.chars.isNotEmpty()) {
@@ -62,6 +67,7 @@ object AnalysisFormatter {
                         append(item.chars.joinToString("  ") { "${it.ko}→${it.hanja}（${it.zh}）" })
                         append('\n')
                     }
+                    if (item.why.isNotBlank()) append("   ").append(item.why).append('\n')
                     if (item.tip.isNotBlank()) append("   ").append(item.tip).append('\n')
                 }
             }

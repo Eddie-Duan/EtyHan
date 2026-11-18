@@ -2,6 +2,7 @@ package com.etyhan.app.ai
 
 import com.etyhan.app.data.Origin
 import com.etyhan.app.data.PosLabels
+import com.etyhan.app.data.SourceLabels
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -88,6 +89,54 @@ class AnalysisParserTest {
         val a = (AnalysisParser.parse(raw) as ParseResult.Ok).analysis
         assertEquals(1, a.segments.size)
         assertEquals(1, a.tips.size)
+    }
+
+
+    @Test
+    fun parsesPronunciationAndSourceFields() {
+        val raw = """
+            {
+              "t": "学校", "rom": "hakkyo", "romHi": "kk",
+              "segs": [
+                {"ko":"학교","rom":"hakkyo","romHi":"kk","pron":"[학꾜]","why":"紧音化","pos":"명사","zh":"学校","hanja":"學校","origin":"sino"},
+                {"ko":"버스","rom":"beoseu","zh":"公交车","origin":"loan","lang":"en","src":"bus","srcRom":""}
+              ],
+              "ety": {"items":[{"w":"버스","origin":"loan","lang":"en","src":"bus","meaning":"公交车"}]}
+            }
+        """.trimIndent()
+        val a = (AnalysisParser.parse(raw) as ParseResult.Ok).analysis
+        assertEquals("kk", a.romHighlight)
+        assertEquals("kk", a.segments[0].romHi)
+        assertEquals("[학꾜]", a.segments[0].pron)
+        assertEquals("紧音化", a.segments[0].why)
+        assertEquals("bus", a.segments[1].src)
+        assertEquals("en", a.segments[1].lang)
+        assertEquals("", a.segments[1].srcRom)
+        assertEquals("bus", a.etymology!!.items[0].sourceForm)
+    }
+
+    @Test
+    fun sourceLabelsAreEqualStatus() {
+        assertEquals("汉", SourceLabels.short(Origin.SINO, ""))
+        assertEquals("本土", SourceLabels.short(Origin.NATIVE, ""))
+        assertEquals("英", SourceLabels.short(Origin.LOAN, "en"))
+        assertEquals("日", SourceLabels.short(Origin.LOAN, "Japanese"))
+        assertEquals("法", SourceLabels.short(Origin.LOAN, "fr"))
+        assertEquals("德", SourceLabels.short(Origin.LOAN, "德语"))
+        assertEquals("外", SourceLabels.short(Origin.LOAN, ""))
+        assertEquals("英语来源", SourceLabels.label(Origin.LOAN, "en"))
+        assertEquals("日语来源", SourceLabels.label(Origin.LOAN, "ja"))
+    }
+
+    @Test
+    fun trimsNewFields() {
+        val raw = """{"t":"x","romHi":" kk ","segs":[{"ko":"학교","rom":" hakkyo ","romHi":" kk ","src":" bus ","lang":" en "}]}"""
+        val a = (AnalysisParser.parse(raw) as ParseResult.Ok).analysis
+        assertEquals("kk", a.romHighlight)
+        assertEquals("hakkyo", a.segments[0].rom)
+        assertEquals("kk", a.segments[0].romHi)
+        assertEquals("bus", a.segments[0].src)
+        assertEquals("en", a.segments[0].lang)
     }
 
     @Test
