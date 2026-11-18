@@ -1,0 +1,25 @@
+# Gradle / Android
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.idea/
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.keystore
+!debug.keystore
+
+# Local toolchain used only for CI-less builds on this machine
+.tooling/
+
+# Build/test logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
