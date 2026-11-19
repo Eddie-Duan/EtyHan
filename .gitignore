@@ -23,3 +23,13 @@ captures/
 # OS
 .DS_Store
 Thumbs.db
+# Recraft icon pipeline
+design/icon/.env
+design/icon/out/
+
+/.env
+
+# Python
+__pycache__/
+*.pyc
+

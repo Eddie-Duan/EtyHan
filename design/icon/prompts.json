@@ -1,0 +1,190 @@
+{
+  "_comment": "每个 set 是一批出图。concepts/lockup 用 raster 快速看方向，vector 出 SVG 终稿。size 用比例或像素皆可。",
+  "brand": {
+    "seal": [140, 29, 24],
+    "paper": [246, 241, 231]
+  },
+  "sets": {
+    "concepts": [
+      {
+        "id": "C1",
+        "title": "印章方框 + 回纹角",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring (thin circle outline) centred beneath them; the two bars and the ring carry equal visual weight and read as both an h and an equals sign plus a circle. Enclosed in a delicate square seal frame with Chinese 回紋 key-fret corner brackets, thin even 1.5pt lines, like a carved vermilion seal. Two-colour palette only: deep vermilion ink #8C1D18 on warm rice-paper ivory #F6F1E7. Crisp even stroke width, rounded stroke ends, generous margin. No gradients, no shadows, no additional text, no lettering, no photorealism."
+      },
+      {
+        "id": "C2",
+        "title": "圆章 + 回纹环",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring (thin circle outline) centred beneath them. Enclosed by a double concentric circle ornamented with a continuous Chinese 回紋 meander running between the two rings, like a round vermilion seal. Two-colour palette only: deep vermilion ink #8C1D18 on warm rice-paper ivory #F6F1E7. Crisp even strokes, rounded stroke ends, calm and symmetrical, generous margin. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C3",
+        "title": "云纹四角",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them. Four small ruyi cloud 雲紋 motifs in the four corners, drawn in thin delicate lines, lots of breathing space, mark dead-centred and dominant. Two-colour palette only: deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. Crisp even stroke, rounded ends. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C4",
+        "title": "唐草卷草托底",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them. A delicate Korean dancheong honeysuckle-scroll 唐草 filigree arc cradles the ring from below and curls up on both sides, thin single-weight line, refined and airy. Two-colour palette only: deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. Rounded stroke ends, generous margin. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C5",
+        "title": "龟甲纹极淡底",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them, solid vermilion #8C1D18. Background: a very faint hexagonal tortoise-shell 龜甲紋 lattice in pale tinted red, about 8 percent opacity, covering the whole square. Warm rice-paper ivory #F6F1E7 ground. Crisp solid mark on top, generous margin. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C6",
+        "title": "雷纹横带",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them, positioned slightly high. Across the bottom quarter runs a low horizontal band of Chinese thunder-pattern 雷紋 meander, thin and even, like a printed border. Two-colour palette only: deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. Crisp strokes, generous side margins. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C7",
+        "title": "韩纸木刻印痕",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas, printed look. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them. Rendered as a two-pass woodblock impression on hanji paper: visible paper fibre texture, slightly uneven ink edges, a soft one-pixel misregistration ghost offset, ink deep vermilion #8C1D18 on rice-paper ivory #F6F1E7. Still crisp, legible and centred, generous margin. No gradients, no shadows, no additional text, no lettering."
+      },
+      {
+        "id": "C8",
+        "title": "纯极简（对照）",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Flat vector app icon, 1:1 square canvas. Pure minimal, no ornament at all. The mark: a lowercase letter h formed by two equal-length thick horizontal bars, one above the other, with a perfect ring centred beneath them. Refined optical spacing, slightly tapered stroke terminals with a hint of brush pressure at the ends of the bars, perfectly balanced negative space. Deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. No gradients, no shadows, no texture, no additional text, no lettering."
+      }
+    ],
+
+    "lockup": [
+      {
+        "id": "L1",
+        "title": "横版标识 2:1（回纹水印）",
+        "model": "recraftv4_1",
+        "size": "1536x768",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Horizontal brand lockup on a 2:1 wide canvas, generous white space. At the left third: the mark, a lowercase letter h made of two equal-length thick horizontal bars and a ring centred beneath them, inside its own square seal field. A thin vertical rule separates it from the right two thirds, where a faint oversized Chinese 回紋 key-fret square motif sits as a watermark. Two-colour palette only: deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. Flat vector, crisp even strokes. No gradients, no shadows, no text, no lettering."
+      },
+      {
+        "id": "L2",
+        "title": "横版标识 2:1（雷纹横线）",
+        "model": "recraftv4_1",
+        "size": "1536x768",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Horizontal brand lockup on a 2:1 wide canvas. The mark, a lowercase letter h made of two equal-length thick horizontal bars and a ring centred beneath them, centred inside a round vermilion seal at the left. From the seal, two thin horizontal Chinese thunder-pattern 雷紋 lines run to the right edge, fading in weight, lots of negative space. Two-colour palette only: deep vermilion #8C1D18 on warm rice-paper ivory #F6F1E7. Flat vector, crisp strokes. No gradients, no shadows, no text, no lettering."
+      }
+    ],
+
+    "vector": [
+      {
+        "id": "V1",
+        "title": "纯字形（描摹基准）",
+        "model": "recraftv4_1_vector",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Minimal geometric logo mark, perfectly symmetrical, no decoration. A lowercase letter h formed by two equal-length thick horizontal bars stacked vertically with a small even gap, and a perfect circle outline centred beneath them whose stroke width equals the bars. Flat single-colour vermilion #8C1D18 on transparent, generous margin, rounded stroke caps, crisp vector geometry, no text, no lettering."
+      },
+      {
+        "id": "V2",
+        "title": "印章方框 + 回纹角（矢量）",
+        "model": "recraftv4_1_vector",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Minimal geometric logo mark in a square seal. Inside: a lowercase letter h formed by two equal-length thick horizontal bars and a perfect ring beneath them, centred with even margins. Around it a thin square seal border with Chinese 回紋 key-fret corner brackets. Flat single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, crisp vector geometry, even stroke weights, no gradients, no text, no lettering."
+      },
+      {
+        "id": "V3",
+        "title": "云纹四角（矢量）",
+        "model": "recraftv4_1_vector",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Minimal geometric logo mark. A lowercase letter h formed by two equal-length thick horizontal bars and a perfect ring beneath them, centred and dominant, with four tiny ruyi cloud 雲紋 corner motifs drawn in a single thin even line weight. Flat single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, crisp vector geometry, no gradients, no text, no lettering."
+      }
+    ],
+
+    "pattern": [
+      {
+        "id": "P1",
+        "title": "回纹带（中国）",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Ornament study, flat vector, no subject. A horizontal band of Chinese 回紋 key-fret meander with clean right-angle turns, six even repeats, thin uniform stroke weight, perfectly squared geometry, single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, generous margin, no text, no lettering, no shading."
+      },
+      {
+        "id": "P2",
+        "title": "如意云纹（中国）",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Ornament study, flat vector, no subject. A ruyi cloud 雲紋 motif: a symmetric scroll of two curls with a pointed tail, drawn as one continuous thin line of even weight, pure geometry, single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, centred with wide margin, no text, no lettering, no shading."
+      },
+      {
+        "id": "P3",
+        "title": "龟甲纹（朝鲜）",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Ornament study, flat vector, no subject. A seamless honeycomb lattice of hexagons, the Korean tortoise-shell 龜甲紋 pattern, thin perfectly even lines, exact 60 degree geometry, single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, no text, no lettering, no shading."
+      },
+      {
+        "id": "P4",
+        "title": "唐草卷草（丹青）",
+        "model": "recraftv4_1",
+        "size": "1024x1024",
+        "format": "png",
+        "colors": [[140, 29, 24], [246, 241, 231]],
+        "background": [246, 241, 231],
+        "prompt": "Ornament study, flat vector, no subject. A Korean dancheong honeysuckle-scroll 唐草 medallion: one symmetric circular scroll motif with curling leaves, all drawn in a single continuous thin line of even weight, pure outline, single-colour vermilion #8C1D18 on warm rice-paper ivory #F6F1E7, centred with wide margin, no text, no lettering, no shading."
+      }
+    ]
+  }
+}
