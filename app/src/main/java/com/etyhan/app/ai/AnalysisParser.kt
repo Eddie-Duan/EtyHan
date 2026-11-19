@@ -161,6 +161,7 @@ object AnalysisParser {
                         hanja = item.hanja.trim(),
                         rom = item.rom.trim(),
                         meaning = item.meaning.trim(),
+                        literal = item.literal.trim(),
                         english = item.english.trim(),
                         tip = item.tip.trim(),
                         chars = item.chars.filter { it.ko.isNotBlank() || it.hanja.isNotBlank() }.take(6),

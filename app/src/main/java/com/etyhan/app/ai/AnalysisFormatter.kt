@@ -59,6 +59,7 @@ object AnalysisFormatter {
                     append("· ").append(item.word)
                     append(" ").append(SourceLabels.short(Origin.of(item.origin), item.lang))
                     if (item.sourceForm.isNotBlank()) append("（").append(item.sourceForm).append("）")
+                    if (item.literal.isNotBlank()) append(" 字面“").append(item.literal).append("”")
                     if (item.pron.isNotBlank()) append(" 发音").append(item.pron)
                     if (item.meaning.isNotBlank()) append("：").append(item.meaning)
                     append('\n')

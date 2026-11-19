@@ -115,6 +115,8 @@ data class EtyItem(
     /** 音变原因 */
     @SerialName("why") val why: String = "",
     @SerialName("meaning") val meaning: String = "",
+    /** 汉字词的字面义（逐字直译）；只在字面义与今义不同时填，如 親舊→亲戚旧友 */
+    @SerialName("lit") val literal: String = "",
     /** 来源语言原词，如 computer / 弁当 / boutique */
     @SerialName("src") val src: String = "",
     /** 外来词原词的拉丁转写（英语不需要，日语/法语等需要） */

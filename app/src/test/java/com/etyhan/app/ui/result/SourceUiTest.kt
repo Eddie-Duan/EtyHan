@@ -9,9 +9,13 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.unit.dp
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.etyhan.app.MainActivity
+import com.etyhan.app.data.EtyItem
+import com.etyhan.app.data.HanjaChar
 import com.etyhan.app.data.Segment
+import com.etyhan.app.tts.Speaker
 import com.etyhan.app.ui.theme.EtyHanTheme
 import org.junit.Rule
 import org.junit.Test
@@ -44,6 +48,11 @@ class SourceUiTest {
     private val native = Segment(
         ko = "집", rom = "jip", pos = "명사", zh = "房子", origin = "native",
     )
+    private val friend = EtyItem(
+        word = "친구", origin = "sino", hanja = "親舊", rom = "chingu",
+        meaning = "朋友", literal = "亲戚旧友",
+        chars = listOf(HanjaChar("친", "親", "亲"), HanjaChar("구", "舊", "旧")),
+    )
 
     @Test
     fun sourceLabelsAndFormsRender() {
@@ -55,6 +64,7 @@ class SourceUiTest {
                         SegmentRow(english, {})
                         SegmentRow(japanese, {})
                         SegmentRow(native, {})
+                        EtyItemCard(friend, Speaker(ApplicationProvider.getApplicationContext()), {})
                     }
                 }
             }
@@ -74,5 +84,10 @@ class SourceUiTest {
         rule.onAllNodesWithText("hakkyo").onFirst().assertIsDisplayed()
         rule.onAllNodesWithText("紧音化").onFirst().assertIsDisplayed()
         rule.onAllNodesWithText("[학꾜]").onFirst().assertIsDisplayed()
+
+        // 汉字词按词源标注：即使今义（朋友）和字面义（亲戚旧友）不同
+        rule.onAllNodesWithText("親舊").onFirst().assertIsDisplayed()
+        rule.onAllNodesWithText("字面：亲戚旧友").onFirst().assertIsDisplayed()
+        rule.onAllNodesWithText("今义：朋友").onFirst().assertIsDisplayed()
     }
 }

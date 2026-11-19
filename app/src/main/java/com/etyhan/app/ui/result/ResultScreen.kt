@@ -808,9 +808,20 @@ internal fun EtyItemCard(
             )
         }
 
+        if (item.literal.isNotBlank()) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                "字面：${item.literal}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         if (item.meaning.isNotBlank()) {
-            Spacer(Modifier.height(8.dp))
-            Text(item.meaning, style = MaterialTheme.typography.bodyLarge)
+            Spacer(Modifier.height(if (item.literal.isNotBlank()) 2.dp else 8.dp))
+            Text(
+                text = if (item.literal.isNotBlank()) "今义：${item.meaning}" else item.meaning,
+                style = MaterialTheme.typography.bodyLarge,
+            )
         }
 
         if (item.chars.isNotEmpty()) {

@@ -65,9 +65,12 @@ object PromptBuilder {
 - pos 只取这些韩语术语：명사 동사 형용사 부사 조사 어미 대명사 수사 관형사 감탄사 접사.
 - tag 用中文写语法角色：词干、主格助词、宾格助词、方向助词、过去时制、尊敬语尾、终结语尾、连接语尾、冠形语尾 等。
 - 来源（重要）：origin 只取 sino（汉字词）/native（固有词）/loan（外来词）/hybrid（混合）/unknown。
+  - 汉字词按【词源】判定，不看中文今义：只要词素来自汉字，就是 sino，必须给 hanja——即使中文已不用这个词，或意思完全不同。
+    例：친구=親舊（字面“亲戚旧友”，今义“朋友”）｜사과=沙果（中文指海棠果，韩语泛指苹果）｜신문=新聞（中文“新闻”，韩语“报纸”）。
   - 汉字词：hanja 写繁体，chars 逐字给「韩字→汉字→中文用字」；src、srcRom 留空（标签后只显示汉字）。
-  - 固有词：hanja、src、srcRom 都留空（本土自造词，没有来源写法）。
-  - 外来词：必须给 lang（en/ja/fr/de/es/ru/it/la/zh）和 src（原语言写法，如 bus、computer、すし、boutique）；hanja 留空。
+    字面义与今义不同时，lit 写字面义（≤12 字），并在 tip 里说明语义怎么变的；日制汉字词（野球、会社）与韩制汉字词（三寸、苦生）也标 sino，在 tip 注明“日制/韩制”。
+  - 固有词：hanja、src、srcRom、lit 都留空（本土自造词，没有来源写法）。
+  - 外来词：必须给 lang（en/ja/fr/de/es/ru/it/la/zh）和 src（原语言写法，如 bus、computer、すし、boutique）；hanja、lit 留空。
   - 外来词还要给 srcRom：英语留空（用户看得懂）；日语、法语、德语、西班牙语、俄语、意大利语、拉丁语等必须给拉丁转写（如 すし→sushi、boutique→butik），因为读者看不懂这些语言。
   - 界面会把来源统一显示成 汉/本土/英/日/法/德 的标签，标签后面才是汉字或原词，所以 lang 必须准。
 - 读音（重要，必须标）：
@@ -75,6 +78,7 @@ object PromptBuilder {
   - pron 给韩文实际发音，放方括号里，如 [학꾜]；why 用 ≤12 字说明规则，如“紧音化”“词首 ㅂ 读 p”“의 作助词读 e”。
   - 必须标出的情况：词首平音送气（ㅂ→p、ㄱ→k、ㄷ→t、ㅈ→ch）、紧音化（→kk/tt/pp/ss/jj）、鼻音化（ㄱ→ng、ㄷ/ㅅ→n、ㅂ→m）、流音化（ㄴ→l）、连音、ㅎ 弱化或脱落、의 的特殊读音（属格读 e、词首读 i）。
   - 示例：학교 → rom “hakkyo”，romHi “kk”，pron “[학꾜]”，why “紧音化”；의（属格）→ rom “e”，romHi “e”，why “特殊读音”。
+- 分段的汉字词若字面义与今义不同，在 segs[].note 里写“字面…”，不要因为意思变了就不算汉字词。
 - ety.items 只列本句值得讲的词（优先汉字词、外来词、易误解的固有词）；单词输入时 items 就分析这个词本身。
 - ex 的韩语必须真实自然；point 用一句话点出语法点。
 - tips 写给中文母语者：同形异义（如 집 不是“集”）、汉字音与普通话的对应、助词 vs 语序、敬语层级差异。
@@ -105,12 +109,12 @@ object PromptBuilder {
   "ety": {
     "summary": "一句话点出本句的词源构成（汉字词/固有词/外来词比例、来源）",
     "items": [
-      {"w":"학교","origin":"sino","hanja":"學校","rom":"hakkyo","romHi":"kk","pron":"[학꾜]","why":"紧音化","meaning":"学校","src":"","srcRom":"","lang":"",
+      {"w":"학교","origin":"sino","hanja":"學校","rom":"hakkyo","romHi":"kk","pron":"[학꾜]","why":"紧音化","meaning":"学校","lit":"","src":"","srcRom":"","lang":"",
        "chars":[{"ko":"학","hanja":"學","zh":"学"},{"ko":"교","hanja":"校","zh":"校"}],
        "tip":"학 对应“學”的入声，普通话读 xué"},
-      {"w":"버스","origin":"loan","hanja":"","rom":"beoseu","romHi":"","pron":"","why":"","meaning":"公交车","src":"bus","srcRom":"","lang":"en",
+      {"w":"버스","origin":"loan","hanja":"","rom":"beoseu","romHi":"","pron":"","why":"","meaning":"公交车","lit":"","src":"bus","srcRom":"","lang":"en",
        "chars":[],"tip":"英语 bus，ㅡ 是为收音补的元音"},
-      {"w":"스시","origin":"loan","hanja":"","rom":"seusi","romHi":"","pron":"","why":"","meaning":"寿司","src":"すし","srcRom":"sushi","lang":"ja",
+      {"w":"스시","origin":"loan","hanja":"","rom":"seusi","romHi":"","pron":"","why":"","meaning":"寿司","lit":"","src":"すし","srcRom":"sushi","lang":"ja",
        "chars":[],"tip":"日语 すし，ㅡ 替代 u"}
     ],
     "cognates": [{"ko":"학교","hanja":"學校","zh":"学校","note":"词序相同，可直记"}]
@@ -121,6 +125,6 @@ object PromptBuilder {
   "tips": ["에 表方向，에서 表动作发生地：학교에 가다 / 학교에서 공부하다"]
 }
 # 硬性检查
-输出前自检：能否被 JSON.parse 解析？segs 是否覆盖原文？汉字词是否都带了 hanja 和 chars？有音变的地方 romHi 是否真的出现在 rom 里？外来词是否给了 lang 和 src？没做到就修正后再输出，仍然只输出 JSON。
+输出前自检：能否被 JSON.parse 解析？segs 是否覆盖原文？汉字词是否按词源判定（即使中文今义不同）并带了 hanja 和 chars？字面义不同时 lit 是否写了？有音变的地方 romHi 是否真的出现在 rom 里？外来词是否给了 lang 和 src？没做到就修正后再输出，仍然只输出 JSON。
 """
 }
