@@ -63,6 +63,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.etyhan.app.AppContainer
 import com.etyhan.app.ai.AnalysisFormatter
+import com.etyhan.app.data.Ambig
 import com.etyhan.app.data.Analysis
 import com.etyhan.app.data.AppSettings
 import com.etyhan.app.data.EtyItem
@@ -165,6 +166,13 @@ fun ResultScreen(
                 item {
                     Column(Modifier.padding(horizontal = 20.dp, vertical = 6.dp)) {
                         TranslationCard(analysis)
+                    }
+                }
+                if (analysis.ambiguity.isNotEmpty()) {
+                    item {
+                        Column(Modifier.padding(horizontal = 20.dp, vertical = 6.dp)) {
+                            AmbiguityCard(analysis.ambiguity)
+                        }
                     }
                 }
                 if (analysis.tips.isNotEmpty()) {
@@ -333,7 +341,7 @@ private fun Hero(
         Spacer(Modifier.height(8.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             if (analysis.level.isNotBlank()) TagPill(analysis.level)
-            TagPill(if (analysis.isSentence) "句子" else "单词")
+            TagPill(analysis.kindLabel)
             if (analysis.segments.isNotEmpty()) TagPill("${analysis.segments.size} 个成分")
         }
     }
@@ -362,6 +370,41 @@ private fun TranslationCard(analysis: Analysis) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+        }
+    }
+}
+
+@Composable
+private fun AmbiguityCard(items: List<Ambig>) {
+    EtyCard {
+        Text(
+            "同形词",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary,
+        )
+        items.forEach { a ->
+            Spacer(Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(a.ko, style = MaterialTheme.typography.titleMedium)
+                if (a.pick.isNotBlank()) {
+                    Spacer(Modifier.width(8.dp))
+                    TagPill("取「${a.pick}」")
+                }
+            }
+            if (a.candidates.isNotEmpty()) {
+                Text(
+                    a.candidates.joinToString(" / "),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (a.why.isNotBlank()) {
+                Text(
+                    a.why,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }

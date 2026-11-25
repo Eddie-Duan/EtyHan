@@ -96,11 +96,6 @@ fun LookupScreen(
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text("EtyHan", style = MaterialTheme.typography.headlineMedium)
-                    Text(
-                        "韩语 · 语法分段 · 词汇词源",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
                 ProviderPill(
                     text = if (state.ready) "${state.providerName} · ${state.settings.model}" else "未配置模型",

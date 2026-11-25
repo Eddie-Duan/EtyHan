@@ -14,10 +14,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Analysis(
     val v: Int = 1,
-    /** word / sentence */
+    /** word / phrase / sentence */
     val kind: String = "word",
-    /** 中文译文（单词则为释义） */
+    /** 中文译文（单词则为释义）。按中文语序重写，不是逐段拼接 */
     @SerialName("t") val translation: String = "",
+    /** 同形词 / 多义项候选；只有一个义项时为空 */
+    @SerialName("ambig") val ambiguity: List<Ambig> = emptyList(),
     /** 整条输入的罗马音（按实际读音写） */
     @SerialName("rom") val romanization: String = "",
     /** 罗马音里要标红的子串（音变 / 特殊读音），多个用 | 分隔 */
@@ -35,9 +37,31 @@ data class Analysis(
     @SerialName("tips") val tips: List<String> = emptyList(),
 ) {
     val isSentence: Boolean get() = kind == "sentence"
+    val kindLabel: String
+        get() = when (kind) {
+            "sentence" -> "句子"
+            "phrase" -> "词组"
+            else -> "单词"
+        }
     val isEmpty: Boolean
         get() = translation.isBlank() && segments.isEmpty() && etymology == null
 }
+
+/**
+ * 同一写法有多个常用汉字词或多个易混义项时的一条记录。
+ * 例：경주 → 慶州（地名）/ 競走（赛跑）。
+ */
+@Serializable
+data class Ambig(
+    /** 原文写法 */
+    @SerialName("ko") val ko: String = "",
+    /** 候选义项，按可能性从高到低 */
+    @SerialName("cands") val candidates: List<String> = emptyList(),
+    /** 本次采用的义项，应与 candidates 之一对应 */
+    @SerialName("pick") val pick: String = "",
+    /** 取舍理由（语境、搭配、常用度） */
+    @SerialName("why") val why: String = "",
+)
 
 @Serializable
 data class Segment(

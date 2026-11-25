@@ -1,5 +1,6 @@
 package com.etyhan.app.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,12 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.etyhan.app.R
 
-/** 品牌字标：朱砂印 + 韩文首字母。 */
+/** 品牌标识：朱砂底 + 几何「ㅎ」（两条等长横线 + 圆环）。 */
 @Composable
 fun BrandMark(modifier: Modifier = Modifier, size: Int = 40) {
     Box(
@@ -39,11 +43,11 @@ fun BrandMark(modifier: Modifier = Modifier, size: Int = 40) {
             .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = "ㅎ",
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontFamily = FontFamily.Serif,
-            fontSize = (size * 0.55f).sp,
+        Image(
+            painter = painterResource(R.drawable.ic_brand_mark),
+            contentDescription = null,
+            modifier = Modifier.size((size * 0.68f).dp),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
         )
     }
 }
