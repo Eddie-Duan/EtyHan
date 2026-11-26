@@ -71,7 +71,7 @@ class SourceUiTest {
         }
         rule.waitForIdle()
 
-        rule.onAllNodesWithText("汉").onFirst().assertIsDisplayed()
+        rule.onAllNodesWithText("漢").onFirst().assertIsDisplayed()
         rule.onAllNodesWithText("英").onFirst().assertIsDisplayed()
         rule.onAllNodesWithText("日").onFirst().assertIsDisplayed()
         rule.onAllNodesWithText("本土").onFirst().assertIsDisplayed()

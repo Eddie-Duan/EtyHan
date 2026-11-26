@@ -117,7 +117,7 @@ class AnalysisParserTest {
 
     @Test
     fun sourceLabelsAreEqualStatus() {
-        assertEquals("汉", SourceLabels.short(Origin.SINO, ""))
+        assertEquals("漢", SourceLabels.short(Origin.SINO, ""))
         assertEquals("本土", SourceLabels.short(Origin.NATIVE, ""))
         assertEquals("英", SourceLabels.short(Origin.LOAN, "en"))
         assertEquals("日", SourceLabels.short(Origin.LOAN, "Japanese"))
