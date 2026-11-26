@@ -84,6 +84,10 @@ import com.etyhan.app.ui.components.SourceForm
 import com.etyhan.app.ui.components.SectionHeader
 import com.etyhan.app.ui.components.SpeakButton
 import com.etyhan.app.ui.components.TagPill
+import com.etyhan.app.ui.components.baseFormColors
+import com.etyhan.app.ui.components.noteColors
+import com.etyhan.app.ui.components.roleColors
+import com.etyhan.app.ui.components.sourceColors
 import com.etyhan.app.ui.components.copyToClipboard
 import com.etyhan.app.ui.components.originColors
 import com.etyhan.app.ui.components.pronunciationRed
@@ -513,12 +517,6 @@ private fun SegmentsBody(analysis: Analysis, onWordClick: (String) -> Unit) {
                 style = MaterialTheme.typography.labelSmall,
                 color = pronunciationRed(),
             )
-            Spacer(Modifier.height(3.dp))
-            Text(
-                "点按任一词可单独查它的词源；语尾和助词也可以点。",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
@@ -540,12 +538,13 @@ private fun SourceEntry(
     lang: String,
     large: Boolean = false,
 ) {
+    val (bg, fg) = sourceColors(origin, lang)
     when {
-        hanja.isNotBlank() -> SourceForm(hanja, large = large)
+        hanja.isNotBlank() -> SourceForm(hanja, large = large, container = bg, contentColor = fg)
         src.isNotBlank() -> {
             val key = SourceLabels.langKey(lang)
             val showRom = srcRom.isNotBlank() && key != "en" && key != "zh"
-            SourceForm(src, rom = if (showRom) srcRom else "", large = large)
+            SourceForm(src, rom = if (showRom) srcRom else "", large = large, container = bg, contentColor = fg)
         }
         else -> Unit
     }
@@ -622,19 +621,18 @@ internal fun SegmentRow(seg: Segment, onWordClick: (String) -> Unit) {
 
         if (seg.tag.isNotBlank() || seg.base.isNotBlank()) {
             Spacer(Modifier.height(5.dp))
+            val (roleBg, roleFg) = roleColors()
+            val (baseBg, baseFg) = baseFormColors()
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                if (seg.tag.isNotBlank()) TagPill(seg.tag)
-                if (seg.base.isNotBlank()) TagPill("原形 ${seg.base}")
+                if (seg.tag.isNotBlank()) TagPill(seg.tag, container = roleBg, contentColor = roleFg)
+                if (seg.base.isNotBlank()) TagPill("原形 ${seg.base}", container = baseBg, contentColor = baseFg)
             }
         }
 
         if (seg.note.isNotBlank()) {
             Spacer(Modifier.height(5.dp))
-            Text(
-                seg.note,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            val (noteBg, noteFg) = noteColors()
+            TagPill(seg.note, container = noteBg, contentColor = noteFg, maxLines = 3)
         }
     }
 }

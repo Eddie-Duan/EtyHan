@@ -237,7 +237,7 @@ object SourceLabels {
 
     /** 标签上的一个字。 */
     fun short(origin: Origin, lang: String? = null): String = when (origin) {
-        Origin.SINO -> "汉"
+        Origin.SINO -> "漢"
         Origin.NATIVE -> "本土"
         Origin.HYBRID -> "混"
         Origin.UNKNOWN -> "?"
@@ -250,7 +250,7 @@ object SourceLabels {
             "ru" -> "俄"
             "it" -> "意"
             "la" -> "拉"
-            "zh" -> "汉"
+            "zh" -> "漢"
             else -> "外"
         }
     }

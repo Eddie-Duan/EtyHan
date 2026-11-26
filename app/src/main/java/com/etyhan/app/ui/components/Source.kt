@@ -18,7 +18,7 @@ import com.etyhan.app.data.Origin
 import com.etyhan.app.data.SourceLabels
 
 /**
- * 来源标签：汉 / 固 / 英 / 日 / 法 / 德…
+ * 来源标签：漢 / 固 / 英 / 日 / 法 / 德…
  *
  * 所有来源一个样式、一个位置、同样大小——“汉字词”不再比外来词特殊。
  * 标签只放语言，具体内容（汉字、原词）由旁边的 [SourceForm] 单独承载。
@@ -50,6 +50,7 @@ fun SourceBadge(
  * 来源内容：汉字词的汉字、外来词的原词。与标签分开的独立元素。
  *
  * 英语/汉语来源只显示原词；日语、法语等看不懂的语言再附一行拉丁转写（[rom]）。
+ * 传 container/contentColor 时跟随来源色，和 [SourceBadge] 同一套配色。
  */
 @Composable
 fun SourceForm(
@@ -57,13 +58,18 @@ fun SourceForm(
     rom: String = "",
     modifier: Modifier = Modifier,
     large: Boolean = false,
+    container: Color? = null,
+    contentColor: Color? = null,
 ) {
     if (text.isBlank()) return
+    val bg = container ?: MaterialTheme.colorScheme.surfaceVariant
+    val fg = contentColor ?: MaterialTheme.colorScheme.onSurface
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+        color = bg,
+        contentColor = fg,
         shape = RoundedCornerShape(8.dp),
+        border = if (container != null) BorderStroke(1.dp, fg.copy(alpha = 0.18f)) else null,
     ) {
         Column(
             Modifier.padding(horizontal = 9.dp, vertical = if (large) 5.dp else 3.dp),
@@ -79,7 +85,7 @@ fun SourceForm(
                 Text(
                     text = rom,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = fg.copy(alpha = 0.75f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -113,3 +119,21 @@ fun sourceColors(origin: Origin, lang: String = ""): Pair<Color, Color> {
         }
     }
 }
+
+/** 语法角色（词干 / 宾格助词 / 冠形语尾…）：淡紫。 */
+@Composable
+fun roleColors(): Pair<Color, Color> =
+    if (isSystemInDarkTheme()) Color(0xFF3A2B4A) to Color(0xFFDCCBF0)
+    else Color(0xFFEDE3F7) to Color(0xFF573A7C)
+
+/** 原形（base）：青灰，和上面几种都不撞。 */
+@Composable
+fun baseFormColors(): Pair<Color, Color> =
+    if (isSystemInDarkTheme()) Color(0xFF1E3A3A) to Color(0xFFBFE0DF)
+    else Color(0xFFDCEAE9) to Color(0xFF1F5554)
+
+/** 注释（note，如「ㄴ 冠形」）：中性灰。 */
+@Composable
+fun noteColors(): Pair<Color, Color> =
+    if (isSystemInDarkTheme()) Color(0xFF302D28) to Color(0xFFCFC7B9)
+    else Color(0xFFECE9E1) to Color(0xFF6B6252)

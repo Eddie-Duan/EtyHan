@@ -14,8 +14,8 @@ android {
         applicationId = "com.etyhan.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 200001
-        versionName = "0.1.1"
+        versionCode = 200002
+        versionName = "0.2.0"
         vectorDrawables { useSupportLibrary = true }
         resourceConfigurations += listOf("zh", "ko", "en")
     }

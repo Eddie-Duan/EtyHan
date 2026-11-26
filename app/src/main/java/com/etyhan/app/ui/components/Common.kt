@@ -101,6 +101,7 @@ fun TagPill(
     modifier: Modifier = Modifier,
     container: Color = MaterialTheme.colorScheme.surfaceVariant,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    maxLines: Int = 1,
 ) {
     Surface(
         modifier = modifier,
@@ -112,7 +113,7 @@ fun TagPill(
             text = text,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
-            maxLines = 1,
+            maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
         )
     }
