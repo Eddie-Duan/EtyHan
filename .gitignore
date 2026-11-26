@@ -33,3 +33,7 @@ design/icon/out/
 __pycache__/
 *.pyc
 
+
+# 本地构建产物
+dist/
+
