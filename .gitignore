@@ -37,3 +37,6 @@ __pycache__/
 # 本地构建产物
 dist/
 
+
+# 出图时 chrome --headless 留下的临时 profile（沙箱内 chrome 起不来，已被占用）
+design/banner/.chrome-profile/

@@ -1,5 +1,10 @@
 # EtyHan
 
+![EtyHan 首页图：汉字「漢」与「韓」在韩语里都写作「한」，同一个字母 ㅎ 起笔](docs/assets/readme-hero.png)
+
+> **「汉」与「韩」，在韩语里都写作 `한`。**
+> **漢도 韓도 ‘한’ — ㅎ에서 시작하는 같은 글자.**
+
 给中文母语者的韩语精读工具：一次查询，拿到**译文 + 逐词语法分段 + 语法讲解 + 词汇词源（汉字词逐字对照）+ 例句**，并自动沉淀成可离线的个人词库。
 
 Android 原生（Kotlin + Jetpack Compose），模型 API 由用户自己填：DeepSeek、智谱 GLM、硅基流动、阿里百炼、Kimi、OpenRouter、OpenAI、Gemini、本机 Ollama，或任何 OpenAI 兼容服务。

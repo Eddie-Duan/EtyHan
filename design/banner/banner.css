@@ -1,0 +1,159 @@
+/* EtyHan — README hero banners (v2)
+   Brand: 纸 #F6F1E7 / 墨 #1B1A17 / 朱砂 #8C1D18 / 蓝灰 #33566B
+   Mark: ㅎ deconstructed into two bars + one ring (reads as h / = / ○)
+   Type: 汉字 Noto Serif SC (serif) · 한글 Malgun Gothic (sans) — Hangul has no serif on this box,
+         keeping them on separate tiers where it matters. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper: #F6F1E7;
+  --paper-hi: #FBF7EF;
+  --paper-lo: #EFE7D8;
+  --ink: #1B1A17;
+  --muted: #5B5448;
+  --seal: #8C1D18;
+  --rule: #C9BFAE;
+}
+
+html, body { background: #C9C1B1; }
+body { font-family: "Noto Sans SC", "Segoe UI", sans-serif; }
+
+/* preview sheet only (hero.html) */
+body.sheet { padding: 44px 44px 90px; }
+body.sheet .wrap { width: 1600px; margin: 0 auto 56px; }
+body.sheet .cap {
+  font: 600 13px/1 "Segoe UI", sans-serif; letter-spacing: .22em;
+  color: #4A463F; text-transform: uppercase; margin-bottom: 12px;
+}
+
+.serif { font-family: "Noto Serif SC", Georgia, "Times New Roman", serif; }
+.kr    { font-family: "Malgun Gothic", "맑은 고딕", sans-serif; }
+
+.banner {
+  position: relative; width: 1600px; height: 800px; overflow: hidden;
+  background: var(--paper); color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+.grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='320' height='320' filter='url(%23n)' opacity='0.15'/></svg>");
+}
+
+/* seal corner frame (from the app icon lockup) */
+.frame { position: absolute; inset: 36px; pointer-events: none; }
+.frame .edge { position: absolute; background: var(--seal); opacity: .3; }
+.frame .e-top { left: 42px; right: 42px; top: 0; height: 1px; }
+.frame .e-bot { left: 42px; right: 42px; bottom: 0; height: 1px; }
+.frame .e-lft { top: 42px; bottom: 42px; left: 0; width: 1px; }
+.frame .e-rgt { top: 42px; bottom: 42px; right: 0; width: 1px; }
+.frame .ck {
+  position: absolute; width: 78px; height: 78px;
+  stroke: var(--seal); stroke-width: 1; fill: none;
+  opacity: .42; vector-effect: non-scaling-stroke;
+}
+.ck.tl { left: 0; top: 0; }
+.ck.tr { right: 0; top: 0; transform: scaleX(-1); }
+.ck.bl { left: 0; bottom: 0; transform: scaleY(-1); }
+.ck.br { right: 0; bottom: 0; transform: scale(-1, -1); }
+
+/* ---------- shared header lockup ---------- */
+.hd { position: absolute; left: 96px; top: 54px; display: flex; align-items: center; gap: 18px; }
+.hd .mark { width: 52px; height: 52px; display: block; }
+.hd .word { font-size: 44px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+.hh { color: var(--seal); }
+.hd-tag {
+  position: absolute; right: 96px; top: 66px; text-align: right;
+  font-size: 19px; letter-spacing: .22em; color: var(--muted);
+}
+
+/* =========================================================
+   A — 一字两面 / editorial
+   ========================================================= */
+.a2-eq {
+  position: absolute; left: 0; right: 0; top: 306px; text-align: center;
+  font-size: 198px; line-height: 1; letter-spacing: .01em;
+}
+.hanwrap { position: relative; display: inline-block; }
+.a2-eq .hy { font-family: "Malgun Gothic", sans-serif; font-weight: 700; }
+.a2-eq .op {
+  font-size: 108px; color: var(--seal);
+  margin: 0 .13em; vertical-align: .22em; font-weight: 400;
+}
+.jamo-k {
+  position: absolute; left: 50%; top: -58px; transform: translateX(-50%);
+  font-family: "Malgun Gothic", sans-serif; font-size: 52px; line-height: 1;
+  color: var(--muted); white-space: nowrap;
+}
+.jamo-k i { font-style: normal; margin: 0 .3em; }
+.jamo-k i:first-child { color: var(--seal); }
+.a2-rule { position: absolute; left: 96px; right: 96px; top: 592px; height: 1px; background: var(--rule); }
+.a2-col-l { position: absolute; left: 96px; top: 630px; width: 700px; }
+.a2-col-r { position: absolute; left: 836px; top: 626px; width: 668px; }
+.a2-cn { font-size: 36px; line-height: 1.45; letter-spacing: .015em; }
+.a2-cn b { color: var(--seal); font-weight: 600; }
+.a2-kr { font-size: 26px; line-height: 1.55; letter-spacing: .01em; }
+.a2-kr b { color: var(--seal); font-weight: 700; }
+.a2-foot {
+  position: absolute; left: 96px; right: 96px; bottom: 52px;
+  display: flex; align-items: baseline; gap: 22px;
+  font-size: 19px; letter-spacing: .06em; color: var(--muted);
+}
+.a2-foot .dot { width: 9px; height: 9px; background: var(--seal); opacity: .85; align-self: center; }
+.a2-foot .sep { color: var(--rule); }
+
+/* =========================================================
+   B — 拆字 / dictionary page
+   ========================================================= */
+.b-center { position: absolute; left: 0; right: 0; text-align: center; }
+.b-head { position: absolute; left: 0; right: 0; top: 58px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+.b-head .mark { width: 44px; height: 44px; }
+.b-head .word { font-size: 38px; font-weight: 700; letter-spacing: -.01em; }
+.b-rule { position: absolute; left: 50%; top: 132px; transform: translateX(-50%); width: 88px; height: 1px; background: var(--seal); opacity: .45; }
+
+.b-jamo { position: absolute; left: 0; right: 0; top: 166px; display: flex; justify-content: center; gap: 78px; }
+.b-unit { text-align: center; width: 150px; }
+.b-unit .g { font-family: "Malgun Gothic", sans-serif; font-size: 96px; line-height: 1; }
+.b-unit .g.h { color: var(--seal); }
+.b-unit .l { margin-top: 14px; font-size: 12px; letter-spacing: .32em; text-indent: .32em; color: var(--muted); font-family: "Malgun Gothic", sans-serif; }
+
+.b-res { position: absolute; left: 0; right: 0; top: 292px; text-align: center; font-family: "Malgun Gothic", sans-serif; font-size: 180px; line-height: 1; }
+.b-tree { position: absolute; left: 400px; top: 470px; width: 800px; height: 52px; }
+.b-tree path { stroke: var(--seal); stroke-width: 1; fill: none; opacity: .55; }
+.b-leaf { position: absolute; top: 514px; width: 300px; text-align: center; }
+.b-leaf.l { left: 350px; }
+.b-leaf.r { left: 950px; }
+.b-leaf .g { font-size: 112px; line-height: 1.08; }
+.b-leaf .l { margin-top: 8px; font-size: 15px; letter-spacing: .14em; color: var(--muted); }
+.b-leaf .l b { color: var(--seal); font-weight: 600; }
+.b-copy { position: absolute; left: 0; right: 0; top: 700px; text-align: center; }
+.b-copy .cn { font-size: 25px; letter-spacing: .02em; }
+.b-copy .cn b { color: var(--seal); font-weight: 600; }
+.b-copy .kr { margin-top: 8px; font-size: 18px; color: var(--muted); letter-spacing: .02em; }
+
+/* =========================================================
+   C — 归字 / convergence
+   ========================================================= */
+.c-side { position: absolute; top: 230px; width: 324px; text-align: center; }
+.c-side.l { left: 96px; }
+.c-side.r { right: 96px; }
+.c-side .g { font-size: 170px; line-height: 1; }
+.c-side .lat { margin-top: 12px; font-size: 38px; font-style: italic; color: var(--muted); font-family: Georgia, serif; }
+.c-side .cap { margin-top: 10px; font-size: 15px; letter-spacing: .16em; color: var(--muted); }
+.c-ring {
+  position: absolute; left: 610px; top: 130px; width: 380px; height: 380px;
+  border: 1px solid var(--seal); border-radius: 50%; opacity: .28;
+}
+.c-mid { position: absolute; left: 620px; top: 208px; width: 360px; text-align: center; }
+.c-mid .g { font-family: "Malgun Gothic", sans-serif; font-size: 200px; line-height: 1; font-weight: 700; color: var(--seal); }
+.c-mid .cap { margin-top: 30px; font-size: 15px; letter-spacing: .16em; color: var(--muted); }
+.c-arrow { position: absolute; top: 308px; width: 240px; height: 24px; }
+.c-arrow.l { left: 396px; }
+.c-arrow.r { left: 964px; }
+.c-arrow path { stroke: var(--seal); stroke-width: 1.2; fill: none; opacity: .75; }
+.c-rule { position: absolute; left: 96px; right: 96px; top: 570px; height: 1px; background: var(--rule); }
+.c-copy { position: absolute; left: 0; right: 0; top: 614px; text-align: center; }
+.c-copy .cn { font-size: 29px; letter-spacing: .02em; }
+.c-copy .cn b { color: var(--seal); font-weight: 600; }
+.c-copy .kr { margin-top: 10px; font-size: 20px; color: var(--muted); letter-spacing: .02em; }
